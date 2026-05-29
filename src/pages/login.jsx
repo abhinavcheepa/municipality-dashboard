@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { auth } from '../services/firebase'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+import { Mail, Lock, AlertTriangle } from 'lucide-react'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -18,7 +19,7 @@ export default function Login() {
       try {
         await createUserWithEmailAndPassword(auth, email, password)
       } catch (err2) {
-        setError('Login failed. Check credentials.')
+        setError('Authentication failed. Please verify your credentials.')
       }
     }
     setLoading(false)
@@ -27,88 +28,179 @@ export default function Login() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%)',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      padding: '20px',
+      position: 'relative',
+      overflow: 'hidden'
     }}>
+      {/* Dynamic Background Blurs */}
       <div style={{
-        background: 'rgba(255,255,255,0.05)',
-        backdropFilter: 'blur(10px)',
-        borderRadius: '20px',
-        padding: '40px',
-        width: '400px',
-        border: '1px solid rgba(255,255,255,0.1)'
+        position: 'absolute',
+        width: '300px',
+        height: '300px',
+        background: 'rgba(59, 130, 246, 0.15)',
+        borderRadius: '50%',
+        filter: 'blur(80px)',
+        top: '10%',
+        left: '20%',
+        zIndex: 0
+      }} />
+      <div style={{
+        position: 'absolute',
+        width: '300px',
+        height: '300px',
+        background: 'rgba(244, 63, 94, 0.08)',
+        borderRadius: '50%',
+        filter: 'blur(80px)',
+        bottom: '10%',
+        right: '20%',
+        zIndex: 0
+      }} />
+
+      <div className="glass-card animate-fade-in" style={{
+        padding: '40px 32px',
+        width: '100%',
+        maxWidth: '420px',
+        position: 'relative',
+        zIndex: 1,
+        border: '1px solid rgba(255,255,255,0.06)',
+        boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.6)'
       }}>
-        <div style={{textAlign:'center', marginBottom:'30px'}}>
-          <div style={{fontSize:'48px'}}>🛣️</div>
-          <h1 style={{color:'white', fontSize:'24px', margin:'10px 0'}}>Road Complaint System</h1>
-          <p style={{color:'#94a3b8', fontSize:'14px'}}>Municipality Dashboard</p>
+        {/* Header Icon */}
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '64px',
+            height: '64px',
+            borderRadius: '16px',
+            background: 'rgba(59, 130, 246, 0.1)',
+            border: '1px solid rgba(59, 130, 246, 0.25)',
+            fontSize: '32px',
+            marginBottom: '16px',
+            boxShadow: '0 8px 16px -4px rgba(59, 130, 246, 0.2)'
+          }}>
+            🛣️
+          </div>
+          <h1 style={{
+            fontSize: '26px',
+            fontWeight: '700',
+            letterSpacing: '-0.02em',
+            marginBottom: '6px'
+          }}>
+            CivicRoads
+          </h1>
+          <p style={{
+            color: 'var(--text-muted)',
+            fontSize: '14px',
+            margin: 0
+          }}>
+            Municipality Operations Console
+          </p>
         </div>
 
         <form onSubmit={handleLogin}>
-          <div style={{marginBottom:'20px'}}>
-            <label style={{color:'#94a3b8', fontSize:'14px', display:'block', marginBottom:'8px'}}>Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="admin@municipality.gov.in"
-              style={{
-                width: '100%',
-                padding: '12px 16px',
-                background: 'rgba(255,255,255,0.1)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: '10px',
-                color: 'white',
-                fontSize: '14px',
-                outline: 'none',
-                boxSizing: 'border-box'
-              }}
-              required
-            />
+          {/* Email Input */}
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{
+              color: 'var(--text-muted)',
+              fontSize: '13px',
+              fontWeight: '500',
+              display: 'block',
+              marginBottom: '8px'
+            }}>
+              Official Email
+            </label>
+            <div style={{ position: 'relative' }}>
+              <Mail style={{
+                position: 'absolute',
+                left: '14px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                color: 'var(--text-dim)',
+                width: '18px',
+                height: '18px'
+              }} />
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="admin@municipality.gov.in"
+                className="custom-input"
+                style={{ paddingLeft: '44px' }}
+                required
+              />
+            </div>
           </div>
 
-          <div style={{marginBottom:'20px'}}>
-            <label style={{color:'#94a3b8', fontSize:'14px', display:'block', marginBottom:'8px'}}>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="••••••••"
-              style={{
-                width: '100%',
-                padding: '12px 16px',
-                background: 'rgba(255,255,255,0.1)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: '10px',
-                color: 'white',
-                fontSize: '14px',
-                outline: 'none',
-                boxSizing: 'border-box'
-              }}
-              required
-            />
+          {/* Password Input */}
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{
+              color: 'var(--text-muted)',
+              fontSize: '13px',
+              fontWeight: '500',
+              display: 'block',
+              marginBottom: '8px'
+            }}>
+              Password
+            </label>
+            <div style={{ position: 'relative' }}>
+              <Lock style={{
+                position: 'absolute',
+                left: '14px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                color: 'var(--text-dim)',
+                width: '18px',
+                height: '18px'
+              }} />
+              <input
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="custom-input"
+                style={{ paddingLeft: '44px' }}
+                required
+              />
+            </div>
           </div>
 
-          {error && <p style={{color:'#ef4444', fontSize:'14px', marginBottom:'16px'}}>{error}</p>}
+          {/* Error display */}
+          {error && (
+            <div className="badge-danger" style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '12px 16px',
+              borderRadius: '10px',
+              fontSize: '13px',
+              textTransform: 'none',
+              fontWeight: '500',
+              marginBottom: '20px',
+              width: '100%',
+              border: '1px solid var(--color-danger-border)'
+            }}>
+              <AlertTriangle style={{ width: '16px', height: '16px', flexShrink: 0 }} />
+              <span>{error}</span>
+            </div>
+          )}
 
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
+            className="btn btn-primary"
             style={{
               width: '100%',
               padding: '14px',
-              background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
-              border: 'none',
-              borderRadius: '10px',
-              color: 'white',
-              fontSize: '16px',
-              fontWeight: '600',
-              cursor: 'pointer'
+              fontSize: '15px'
             }}
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? 'Authenticating...' : 'Sign In to Dashboard'}
           </button>
         </form>
       </div>
