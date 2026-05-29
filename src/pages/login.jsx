@@ -91,7 +91,7 @@ export default function Login() {
             letterSpacing: '-0.02em',
             marginBottom: '6px'
           }}>
-            CivicRoads
+            Road Complaint System
           </h1>
           <p style={{
             color: 'var(--text-muted)',
